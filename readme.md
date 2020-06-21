@@ -1,8 +1,8 @@
-# dat-node
+# dweb-core
 
-> **dat-node** is a high-level module for building Dat applications on the file system.
+> **dweb-core** is a high-level module for building Dat applications on the file system.
 
-[![npm][0]][1] [![Travis][2]][3] [![Test coverage][4]][5] [![Greenkeeper badge](https://badges.greenkeeper.io/datproject/dat-node.svg)](https://greenkeeper.io/)
+[![npm][0]][1] [![Travis][2]][3] [![Test coverage][4]][5] [![Greenkeeper badge](https://badges.greenkeeper.io/datproject/dweb-core.svg)](https://greenkeeper.io/)
 
 [Dat](http://datproject.org) is a decentralized tool for distributing data and
 files, built for scientific and research data.
@@ -29,18 +29,18 @@ You can start using Dat today in these client applications:
 
 #### Browser Support
 
-Many of our dependencies work in the browser, but `dat-node` is tailored for file system applications. See [dat-js](https://github.com/datproject/dat-js) if you want to build browser-friendly Dat applications.
+Many of our dependencies work in the browser, but `dweb-core` is tailored for file system applications. See [dat-js](https://github.com/datproject/dat-js) if you want to build browser-friendly Dat applications.
 
 ## Example
 
 To send files via Dat:
 
-1. Tell dat-node where the files are.
+1. Tell dweb-core where the files are.
 2. Import the files.
 3. Share the files on the Dat network! (And share the link)
 
 ```js
-var Dat = require('dat-node')
+var Dat = require('dweb-core')
 
 // 1. My files are in /joe/cat-pic-analysis
 Dat('/joe/cat-pic-analysis', function (err, dat) {
@@ -58,14 +58,14 @@ Dat('/joe/cat-pic-analysis', function (err, dat) {
 
 These files are now available to share over the dat network via the key printed in the console.
 
-To download the files, you can make another dat-node instance in a different folder. This time we also have three steps:
+To download the files, you can make another dweb-core instance in a different folder. This time we also have three steps:
 
 1. Tell dat where I want to download the files.
 2. Tell dat what the link is.
 3. Join the network and download!
 
 ```js
-var Dat = require('dat-node')
+var Dat = require('dweb-core')
 
 // 1. Tell Dat where to download the files
 Dat('/download/cat-analysis', {
@@ -81,18 +81,18 @@ Dat('/download/cat-analysis', {
 
 That's it! By default, all files are automatically downloaded when you connect to the other users.
 
-Dig into more use cases below and please let us know if you have questions! You can [open a new issue](https://github.com/datproject/dat-node/issues) or talk to nice humans in [our chat room](https://gitter.im/datproject/discussions).
+Dig into more use cases below and please let us know if you have questions! You can [open a new issue](https://github.com/datproject/dweb-core/issues) or talk to nice humans in [our chat room](https://gitter.im/datproject/discussions).
 
 ### Example Applications
 
-* [Dat CLI](https://github.com/datproject/dat): We use dat-node in the dat CLI.
-* [Dat Desktop](https://github.com/datproject/dat-desktop): The Dat Desktop application manages multiple dat-node instances via [dat-worker](https://github.com/juliangruber/dat-worker).
+* [Dat CLI](https://github.com/datproject/dat): We use dweb-core in the dat CLI.
+* [Dat Desktop](https://github.com/datproject/dat-desktop): The Dat Desktop application manages multiple dweb-core instances via [dat-worker](https://github.com/juliangruber/dat-worker).
 * See the [examples folder](examples) for a minimal share + download usage.
-* And more! Let us know if you have a neat dat-node application to add here.
+* And more! Let us know if you have a neat dweb-core application to add here.
 
 ## Usage
 
-All dat-node applications have a similar structure around three main elements:
+All dweb-core applications have a similar structure around three main elements:
 
 1. **Storage** - where the files and metadata are stored.
 2. **Network** - connecting to other users to upload or download data.
@@ -102,7 +102,7 @@ We'll go through what these are for and a few of the common usages of each eleme
 
 ### Storage
 
-Every dat archive has **storage**, this is the required first argument for dat-node. By default, we use [dat-storage](http://github.com/datproject/dat-storage) which stores the secret key in `~/.dat/` and the rest of the data in `dir/.dat`. Other common options are:
+Every dat archive has **storage**, this is the required first argument for dweb-core. By default, we use [dat-storage](http://github.com/datproject/dat-storage) which stores the secret key in `~/.dat/` and the rest of the data in `dir/.dat`. Other common options are:
 
 * **Persistent storage**: Stored files in `/my-dir` and metadata in `my-dir/.dat` by passing `/my-dir` as the first argument.
 * **Temporary Storage**: Use the `temp: true` option to keep metadata stored in memory.
@@ -244,7 +244,7 @@ The callback, `cb(err, dat)`, includes a `dat` object that has the following pro
 
 ### Module Interfaces
 
-**`dat-node` provides an easy interface to common Dat modules for the created Dat Archive on the `dat` object provided in the callback:**
+**`dweb-core` provides an easy interface to common Dat modules for the created Dat Archive on the `dat` object provided in the callback:**
 
 #### `var network = dat.joinNetwork([opts], [cb])`
 
@@ -332,7 +332,7 @@ var opts = {
 
 You can use a `.datignore` file in the imported directory, `src`, to ignore any the user specifies. This is done by default.
 
-`dat-node` uses [dat-ignore](https://github.com/joehand/dat-ignore) to provide a default ignore option, ignoring the `.dat` folder and all hidden files or directories. Use `opts.ignoreHidden = false` to import hidden files or folders, except the `.dat` directory.
+`dweb-core` uses [dat-ignore](https://github.com/joehand/dat-ignore) to provide a default ignore option, ignoring the `.dat` folder and all hidden files or directories. Use `opts.ignoreHidden = false` to import hidden files or folders, except the `.dat` directory.
 
 *It's important that the `.dat` folder is not imported because it contains a private key that allows the owner to write to the archive.*
 
@@ -388,7 +388,7 @@ Resume network activity. Current, this is the same as `dat.joinNetwork()`.
 
 #### `dat.close(cb)`
 
-Stops replication and closes all the things opened for dat-node, including:
+Stops replication and closes all the things opened for dweb-core, including:
 
 * `dat.archive.close(cb)`
 * `dat.network.close(cb)`
@@ -398,9 +398,9 @@ Stops replication and closes all the things opened for dat-node, including:
 
 MIT
 
-[0]: https://img.shields.io/npm/v/dat-node.svg?style=flat-square
-[1]: https://npmjs.org/package/dat-node
-[2]: https://img.shields.io/travis/datproject/dat-node/master.svg?style=flat-square
-[3]: https://travis-ci.org/datproject/dat-node
-[4]: https://img.shields.io/codecov/c/github/datproject/dat-node/master.svg?style=flat-square
-[5]: https://codecov.io/github/datproject/dat-node
+[0]: https://img.shields.io/npm/v/dweb-core.svg?style=flat-square
+[1]: https://npmjs.org/package/dweb-core
+[2]: https://img.shields.io/travis/datproject/dweb-core/master.svg?style=flat-square
+[3]: https://travis-ci.org/datproject/dweb-core
+[4]: https://img.shields.io/codecov/c/github/datproject/dweb-core/master.svg?style=flat-square
+[5]: https://codecov.io/github/datproject/dweb-core
