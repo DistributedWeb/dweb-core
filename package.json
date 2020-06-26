@@ -1,6 +1,6 @@
 {
   "name": "dwebs-core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Core JavaScript library for dWebJS implementation",
   "main": "index.js",
   "scripts": {
