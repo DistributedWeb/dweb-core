@@ -2,7 +2,7 @@ var fs = require('fs')
 var path = require('path')
 var mirror = require('mirror-folder')
 var ram = require('random-access-memory')
-var Dat = require('..')
+var DWeb = require('..')
 
 var key = process.argv[2]
 if (!key) {
@@ -13,17 +13,17 @@ if (!key) {
 var dest = path.join(__dirname, 'tmp')
 fs.mkdirSync(dest)
 
-Dat(ram, { key: key, sparse: true }, function (err, dat) {
+DWeb(ram, { key: key, sparse: true }, function (err, dweb) {
   if (err) throw err
 
-  var network = dat.joinNetwork()
+  var network = dweb.joinNetwork()
   network.once('connection', function () {
     console.log('Connected')
   })
-  dat.archive.metadata.update(download)
+  dweb.archive.metadata.update(download)
 
   function download () {
-    var progress = mirror({ fs: dat.archive, name: '/' }, dest, function (err) {
+    var progress = mirror({ fs: dweb.archive, name: '/' }, dest, function (err) {
       if (err) throw err
       console.log('Done')
     })
@@ -32,5 +32,5 @@ Dat(ram, { key: key, sparse: true }, function (err, dat) {
     })
   }
 
-  console.log(`Downloading: ${dat.key.toString('hex')}\n`)
+  console.log(`Downloading: ${dweb.key.toString('hex')}\n`)
 })

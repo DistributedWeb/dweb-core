@@ -12,19 +12,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 3.5.5 - 2017-06-19
 ### Fixed
-* The stats tracking should work with much less issues now (https://github.com/datproject/dat-node/pull/175, https://github.com/datproject/dat-node/pull/176)
+* The stats tracking should work with much less issues now (https://github.com/datproject/dweb-node/pull/175, https://github.com/datproject/dweb-node/pull/176)
 
 ## 3.5.0 - 2017-06-19
 ### Added
-* Serve archives over http (https://github.com/datproject/dat-node/pull/160)
+* Serve archives over http (https://github.com/datproject/dweb-node/pull/160)
 
 ## 3.4.0 - 2017-06-19
 ### Added
-* Resolve dat links over http (https://github.com/datproject/dat-node/pull/159)
+* Resolve dweb links over http (https://github.com/datproject/dweb-node/pull/159)
 
 ## 3.3.2 - 2017-05-29
 ### Fixed
-* Bump hyperdrive to fix delete bug in append-tree (https://github.com/mafintosh/append-tree/commit/7e1f3cc9998be4ca7dabe0560b1a1ec1502ac186)
+* Bump dwebfs to fix delete bug in append-tree (https://github.com/distributedweb/append-tree/commit/7e1f3cc9998be4ca7dabe0560b1a1ec1502ac186)
 
 ## 3.3.1 - 2017-05-16
 ### Fixed
@@ -39,12 +39,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 3.0.0 - 2017-04-28
 ### Fixed
-* Upgrade hyperdrive with breaking change.
+* Upgrade dwebfs with breaking change.
 
 ## 2.0.0 - 2017-04-13
-Big new release! Hyperdrive version 8 upgrades to our SLEEP file format. The hyperdrive release improves import, transfer speed, and metadata access. It includes a new API much like the node fs API. Lots of cool things!
+Big new release! DWebFs version 8 upgrades to our SLEEP file format. The dwebfs release improves import, transfer speed, and metadata access. It includes a new API much like the node fs API. Lots of cool things!
 
-We've tried to keep the dat-node API changes to a minimum. But we've moved away from using leveldb to storing the metadata, using a flat file format instead. This means the 2.0 release will be incompatible with exiting dat archives.
+We've tried to keep the dweb-node API changes to a minimum. But we've moved away from using leveldb to storing the metadata, using a flat file format instead. This means the 2.0 release will be incompatible with exiting dweb archives.
 
 If you have any old archives, we definitely recommend you upgrade. Any upgrade time will be made up for with more speed!
 
@@ -52,17 +52,17 @@ The major API differences are listed below, we probably forgot some minor change
 
 ### Changed
 * Using `mirror-folder` for importing files - this comes with a new event emitter for importing and different options.
-* Storage is a lot different! You can specify a directory or a storage function, e.g. `Dat(ram, cb)` now instead of the database.
+* Storage is a lot different! You can specify a directory or a storage function, e.g. `DWeb(ram, cb)` now instead of the database.
 
 ### Removed
 * `opts.db` option - no more database! You can specify a variety of storage formats as the first argument instead.
-* `dat.owner` - this is now `dat.writable`.
-* `stats` events - we are still in the process of upgrading hyperdrive-stats. Hypercore will also support more stats internally now and we will be transitioning to those soon.
+* `dweb.owner` - this is now `dweb.writable`.
+* `stats` events - we are still in the process of upgrading dwebfs-stats. ddatabase will also support more stats internally now and we will be transitioning to those soon.
 * Import options - `mirror-folder` has fewer options on import.
 
 ## 1.4.1 - 2017-03-17
 ### Fixed
-* Pass network `opts` through to discovery-swarm.
+* Pass network `opts` through to dweb-discovery-swarm.
 
 ## 1.4.0 - 2017-03-08
 ### Added
@@ -76,9 +76,9 @@ The major API differences are listed below, we probably forgot some minor change
 * Clone options passed to initArchive
 * Set `opts.file` for archive owner without length
 * `createIfMissing` passed to level options
-* `dat.close()` twice sync errors
+* `dweb.close()` twice sync errors
 * Fix import without options
-* (hyperdrive fix) sparse content archives
+* (dwebfs fix) sparse content archives
 
 ### Changed
 * Remove automatic finalize for snapshot imports
@@ -91,12 +91,12 @@ The major API differences are listed below, we probably forgot some minor change
 ## Changed
 * Rollback temporary changes from 1.3.6
 * Set length on file option
-* Remove hyperdrive version pin
+* Remove dwebfs version pin
 
 ## 1.3.6 - 2017-02-13
 ## Changed
 * Temporary changes for critical replication bugs
-* Pin hyperdrive to `7.13.2`
+* Pin dwebfs to `7.13.2`
 * Remove length option in `raf`
 * Do not allow owner to download
 * Do not set file option for owner
@@ -150,22 +150,22 @@ The major API differences are listed below, we probably forgot some minor change
 
 ## 1.2.0 - 2017-01-23
 ### Changed
-* Read existing keys directly from hyperdrive instead of using the db. Allows for better resuming in any application.
+* Read existing keys directly from dwebfs instead of using the db. Allows for better resuming in any application.
 * Count files much faster on import
 * Add `opts.indexing` and default to true for when `source` = `dest`.
 
 ### Added
 * Support for `drive` as first argument and [multidrive](https://github.com/yoshuawuyts/multidrive/) support
-* `dat.leaveNetwork` - leave the network for this archive key.
+* `dweb.leaveNetwork` - leave the network for this archive key.
 * Added `dir` option to importer.
-* Made it easier to require Dat as a module, without creating archive.
+* Made it easier to require DWeb as a module, without creating archive.
 
 ### Fixed
 * Close archive after other things are closed
 * Use discoveryKey for stats database (security)
 
 ### Deprecated
-* Expose discovery swarm instance on `dat.network` instead of `dat.network.swarm`.
+* Expose discovery swarm instance on `dweb.network` instead of `dweb.network.swarm`.
 
 ## 1.1.1 - 2017-01-06
 ### Fixed
@@ -176,30 +176,30 @@ The major API differences are listed below, we probably forgot some minor change
 * Use `opts.indexing` for importing.
 
 ## 1.0.0 - 2016-12-21
-* dat-node released with a new API. [Read about changes](https://github.com/datproject/dat-node#moving-from-dat-js) from the old API.
+* dweb-node released with a new API. [Read about changes](https://github.com/datproject/dweb-node#moving-from-dweb-js) from the old API.
 
 ## 0.1.1 - 2016-11-29
 ### Fixed
-* Populate `dat.key` after archive opened ([#43](https://github.com/datproject/dat-node/pull/43))
+* Populate `dweb.key` after archive opened ([#43](https://github.com/datproject/dweb-node/pull/43))
 
 ### Changed
-* Use hyperdiscovery instead of hyperdrive-archive-swarm ([#45](https://github.com/datproject/dat-node/pull/45))
+* Use dweb-discovery instead of dwebfs-archive-swarm ([#45](https://github.com/datproject/dweb-node/pull/45))
 
 ## 0.1.0 - 2016-11-17
-Released `dat-js` 4.0 as `dat-node` 0.1.
+Released `dweb-js` 4.0 as `dweb-node` 0.1.
 
-## Moved to dat-node.
-*dat-node 0.1.0 === dat-js 4.0.0*
+## Moved to dweb-node.
+*dweb-node 0.1.0 === dweb-js 4.0.0*
 
 ## 4.0.0 - 2016-11-16
-*This will be the last major version of dat-js. This library will be moving to dat-fs, with a similar API.*
+*This will be the last major version of dweb-js. This library will be moving to dweb-fs, with a similar API.*
 
 ### Removed
 * webrtc support (`opts.webrtc`, `opts.signalhub`)
 * `opts.upload` changed to `opts.discovery.upload` (deprecated in 3.4.0)
 
 ### Fixed
-* Error message for trying to download a dat to folder with existing dat.
+* Error message for trying to download a dweb to folder with existing dweb.
 
 
 ## 3.8.2 - 2016-11-15
@@ -212,12 +212,12 @@ Released `dat-js` 4.0 as `dat-node` 0.1.
 
 ## 3.8.0 - 2016-11-07
 ### Added
-* Expose `dat.owner`, `dat.key`, `dat.peers`
+* Expose `dweb.owner`, `dweb.key`, `dweb.peers`
 * Support buffer keys
 * Forward `db.open` errors
 
 ### Fixed
-* Guard `archive.close` on `dat.close`
+* Guard `archive.close` on `dweb.close`
 
 ## 3.7.1 - 2016-10-29
 ### Fixed
@@ -231,8 +231,8 @@ Released `dat-js` 4.0 as `dat-node` 0.1.
 * `stats.bytesProgress` on downloads
 
 ### Changed
-* Upgrade to hyperdrive 7.5.0
-* Use archive.blocks for stats on download with new hyperdrive functions.
+* Upgrade to dwebfs 7.5.0
+* Use archive.blocks for stats on download with new dwebfs functions.
 
 ## 3.6.0 - 2016-09-27
 ### Added
@@ -251,7 +251,7 @@ Released `dat-js` 4.0 as `dat-node` 0.1.
 
 ## 3.3.1 - 2016-09-06
 ### Fixed
-* Emit `files-counted` event on Dat instance
+* Emit `files-counted` event on DWeb instance
 * Include `stats` object on `file-counted` event
 
 ## 3.3.0 - 2016-09-06
@@ -267,27 +267,27 @@ Released `dat-js` 4.0 as `dat-node` 0.1.
 * User `opts.ignore` extends default opts.
 
 ### Fixed
-* Default ignore does not ignore files with .dat in them.
+* Default ignore does not ignore files with .dweb in them.
 
 ## 3.0.2 - 2016-08-26
 ### Fixed
-* Default ignore config to ignore only `.dat` folder and files inside.
+* Default ignore config to ignore only `.dweb` folder and files inside.
 
 ## 3.0.1 - 2016-08-18
 ### Fixed
-* Fix hyperdrive-import-files bug on sharing directories
+* Fix dwebfs-import-files bug on sharing directories
 
 ## 3.0.0 - 2016-08-18
 ### Added
-* `dat.open()` function to initialize the `.dat` folder
+* `dweb.open()` function to initialize the `.dweb` folder
 
 ### Removed
-* `dat.on('ready')` event for initialization
+* `dweb.on('ready')` event for initialization
 
 
 ## 2.x.x and earlier
 
-* Port `lib/dat.js` file from the [Dat CLI](https://github.com/datproject/dat) library.
+* Port `lib/dweb.js` file from the [DWeb CLI](https://github.com/datproject/dweb) library.
 
 ### Changed
-* Use hyperdrive-import-files to import files on share
+* Use dwebfs-import-files to import files on share

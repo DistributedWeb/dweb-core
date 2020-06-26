@@ -4,40 +4,40 @@ var test = require('tape')
 var rimraf = require('rimraf')
 var tmpDir = require('temporary-directory')
 
-var Dat = require('..')
+var DWeb = require('..')
 var fixtures = path.join(__dirname, 'fixtures')
 
 test('misc: clean old test', function (t) {
-  rimraf(path.join(fixtures, '.dat'), function () {
+  rimraf(path.join(fixtures, '.dweb'), function () {
     t.end()
   })
 })
 
-test('misc: empty dat folder ok', function (t) {
-  fs.mkdir(path.join(fixtures, '.dat'), function () {
-    Dat(fixtures, function (err, dat) {
+test('misc: empty dweb folder ok', function (t) {
+  fs.mkdir(path.join(fixtures, '.dweb'), function () {
+    DWeb(fixtures, function (err, dweb) {
       t.error(err, 'no error')
-      rimraf.sync(path.join(fixtures, '.dat'))
+      rimraf.sync(path.join(fixtures, '.dweb'))
       t.end()
     })
   })
 })
 
-test('misc: existing invalid dat folder', function (t) {
-  fs.mkdir(path.join(fixtures, '.dat'), function () {
-    fs.writeFile(path.join(fixtures, '.dat', '0101.db'), '', function () {
-      Dat(fixtures, function (err, dat) {
+test('misc: existing invalid dweb folder', function (t) {
+  fs.mkdir(path.join(fixtures, '.dweb'), function () {
+    fs.writeFile(path.join(fixtures, '.dweb', '0101.db'), '', function () {
+      DWeb(fixtures, function (err, dweb) {
         t.ok(err, 'errors')
-        rimraf.sync(path.join(fixtures, '.dat'))
+        rimraf.sync(path.join(fixtures, '.dweb'))
         t.end()
       })
     })
   })
 })
 
-test('misc: non existing invalid dat path', function (t) {
+test('misc: non existing invalid dweb path', function (t) {
   t.throws(function () {
-    Dat('/non/existing/folder/', function () {})
+    DWeb('/non/existing/folder/', function () {})
   })
   t.end()
 })
@@ -46,12 +46,12 @@ test('misc: open error', function (t) {
   t.skip('TODO: lock file')
   t.end()
 
-  // Dat(process.cwd(), function (err, datA) {
+  // DWeb(process.cwd(), function (err, datA) {
   //   t.error(err)
-  //   Dat(process.cwd(), function (err, datB) {
+  //   DWeb(process.cwd(), function (err, datB) {
   //     t.ok(err, 'second open errors')
   //     datA.close(function () {
-  //       rimraf(path.join(process.cwd(), '.dat'), function () {
+  //       rimraf(path.join(process.cwd(), '.dweb'), function () {
   //         t.end()
   //       })
   //     })
@@ -61,14 +61,14 @@ test('misc: open error', function (t) {
 
 test('misc: expose .key', function (t) {
   var key = Buffer.alloc(32)
-  Dat(process.cwd(), { key: key, temp: true }, function (err, dat) {
+  DWeb(process.cwd(), { key: key, temp: true }, function (err, dweb) {
     t.error(err, 'error')
-    t.deepEqual(dat.key, key)
+    t.deepEqual(dweb.key, key)
 
-    Dat(fixtures, { temp: true }, function (err, dat) {
+    DWeb(fixtures, { temp: true }, function (err, dweb) {
       t.error(err, 'error')
-      t.notDeepEqual(dat.key, key)
-      dat.close(function (err) {
+      t.notDeepEqual(dweb.key, key)
+      dweb.close(function (err) {
         t.error(err, 'error')
         t.end()
       })
@@ -79,12 +79,12 @@ test('misc: expose .key', function (t) {
 test('misc: expose .writable', function (t) {
   tmpDir(function (err, downDir, cleanup) {
     t.error(err, 'error')
-    Dat(fixtures, function (err, shareDat) {
+    DWeb(fixtures, function (err, shareDat) {
       t.error(err, 'error')
       t.ok(shareDat.writable, 'is writable')
       shareDat.joinNetwork()
 
-      Dat(downDir, { key: shareDat.key }, function (err, downDat) {
+      DWeb(downDir, { key: shareDat.key }, function (err, downDat) {
         t.error(err, 'error')
         t.notOk(downDat.writable, 'not writable')
 
@@ -93,7 +93,7 @@ test('misc: expose .writable', function (t) {
           downDat.close(function (err) {
             t.error(err, 'error')
             cleanup(function (err) {
-              rimraf.sync(path.join(fixtures, '.dat'))
+              rimraf.sync(path.join(fixtures, '.dweb'))
               t.error(err, 'error')
               t.end()
             })
@@ -108,7 +108,7 @@ test('misc: expose swarm.connected', function (t) {
   tmpDir(function (err, downDir, cleanup) {
     t.error(err, 'error')
     var downDat
-    Dat(fixtures, { temp: true }, function (err, shareDat) {
+    DWeb(fixtures, { temp: true }, function (err, shareDat) {
       t.error(err, 'error')
 
       t.doesNotThrow(shareDat.leave, 'leave before join should be noop')
@@ -132,21 +132,21 @@ test('misc: expose swarm.connected', function (t) {
         })
       })
 
-      Dat(downDir, { key: shareDat.key, temp: true }, function (err, dat) {
+      DWeb(downDir, { key: shareDat.key, temp: true }, function (err, dweb) {
         t.error(err, 'error')
-        dat.joinNetwork()
-        downDat = dat
+        dweb.joinNetwork()
+        downDat = dweb
       })
     })
   })
 })
 
 test('misc: close twice errors', function (t) {
-  Dat(fixtures, { temp: true }, function (err, dat) {
+  DWeb(fixtures, { temp: true }, function (err, dweb) {
     t.error(err, 'error')
-    dat.close(function (err) {
+    dweb.close(function (err) {
       t.error(err, 'error')
-      dat.close(function (err) {
+      dweb.close(function (err) {
         t.ok(err, 'has close error second time')
         t.end()
       })
@@ -155,13 +155,13 @@ test('misc: close twice errors', function (t) {
 })
 
 test('misc: close twice sync errors', function (t) {
-  Dat(fixtures, { temp: true }, function (err, dat) {
+  DWeb(fixtures, { temp: true }, function (err, dweb) {
     t.error(err, 'error')
-    dat.close(function (err) {
+    dweb.close(function (err) {
       t.error(err, 'error')
       t.end()
     })
-    dat.close(function (err) {
+    dweb.close(function (err) {
       t.ok(err, 'has close error second time')
     })
   })
@@ -170,35 +170,35 @@ test('misc: close twice sync errors', function (t) {
 test('misc: create key and open with different key', function (t) {
   t.skip('TODO')
   t.end()
-  // TODO: hyperdrive needs to forward hypercore metadta errors
-  // https://github.com/mafintosh/hyperdrive/blob/master/index.js#L37
+  // TODO: dwebfs needs to forward ddatabase metadta errors
+  // https://github.com/distributedweb/dwebfs/blob/master/index.js#L37
 
-  // rimraf.sync(path.join(fixtures, '.dat'))
-  // Dat(fixtures, function (err, dat) {
+  // rimraf.sync(path.join(fixtures, '.dweb'))
+  // DWeb(fixtures, function (err, dweb) {
   //   t.error(err, 'error')
-  //   dat.close(function (err) {
+  //   dweb.close(function (err) {
   //     t.error(err, 'error')
-  //     Dat(fixtures, {key: '6161616161616161616161616161616161616161616161616161616161616161'}, function (err, dat) {
-  //       t.same(err.message, 'Another hypercore is stored here', 'has error')
-  //       rimraf.sync(path.join(fixtures, '.dat'))
+  //     DWeb(fixtures, {key: '6161616161616161616161616161616161616161616161616161616161616161'}, function (err, dweb) {
+  //       t.same(err.message, 'Another ddatabase is stored here', 'has error')
+  //       rimraf.sync(path.join(fixtures, '.dweb'))
   //       t.end()
   //     })
   //   })
   // })
 })
 
-test('misc: make dat with random key and open again', function (t) {
+test('misc: make dweb with random key and open again', function (t) {
   tmpDir(function (err, downDir, cleanup) {
     t.error(err, 'error')
     var key = '6161616161616161616161616161616161616161616161616161616161616161'
-    Dat(downDir, { key: key }, function (err, dat) {
+    DWeb(downDir, { key: key }, function (err, dweb) {
       t.error(err, 'error')
-      t.ok(dat, 'has dat')
-      dat.close(function (err) {
+      t.ok(dweb, 'has dweb')
+      dweb.close(function (err) {
         t.error(err, 'error')
-        Dat(downDir, { key: key }, function (err, dat) {
+        DWeb(downDir, { key: key }, function (err, dweb) {
           t.error(err, 'error')
-          t.ok(dat, 'has dat')
+          t.ok(dweb, 'has dweb')
           t.end()
         })
       })
@@ -209,32 +209,32 @@ test('misc: make dat with random key and open again', function (t) {
 test('misc: close order', function (t) {
   tmpDir(function (err, downDir, cleanup) {
     t.error(err, 'opened tmp dir')
-    Dat(downDir, { watch: true }, function (err, dat) {
-      t.error(err, 'dat properly opened')
-      dat.importFiles(function (err) {
+    DWeb(downDir, { watch: true }, function (err, dweb) {
+      t.error(err, 'dweb properly opened')
+      dweb.importFiles(function (err) {
         t.error(err, 'started importing files')
-        t.ok(dat.importer, 'importer exists')
-        dat.joinNetwork({ dht: false }, function (err) {
+        t.ok(dweb.importer, 'importer exists')
+        dweb.joinNetwork({ dht: false }, function (err) {
           t.error(err, 'joined network')
           var order = []
-          dat.network.on('error', function (err) {
+          dweb.network.on('error', function (err) {
             t.error(err)
           })
-          dat.network.on('close', function () {
+          dweb.network.on('close', function () {
             order.push('network')
           })
-          dat.importer.on('destroy', function () {
+          dweb.importer.on('destroy', function () {
             order.push('importer')
           })
-          dat.archive.metadata.on('close', function () {
+          dweb.archive.metadata.on('close', function () {
             order.push('metadata')
           })
-          dat.archive.content.on('close', function () {
+          dweb.archive.content.on('close', function () {
             order.push('content')
             t.deepEquals(order, ['network', 'importer', 'metadata', 'content'], 'Close order as expected')
             t.end()
           })
-          dat.close()
+          dweb.close()
         })
       })
     })

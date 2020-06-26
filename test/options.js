@@ -1,26 +1,26 @@
 var path = require('path')
 var test = require('tape')
 var rimraf = require('rimraf')
-var encoding = require('dat-encoding')
+var encoding = require('dweb-encoding')
 
-var Dat = require('..')
+var DWeb = require('..')
 var fixtures = path.join(__dirname, 'fixtures')
 
 test('opts: string or buffer .key', function (t) {
-  rimraf.sync(path.join(process.cwd(), '.dat')) // for failed tests
+  rimraf.sync(path.join(process.cwd(), '.dweb')) // for failed tests
   var buf = Buffer.alloc(32)
-  Dat(process.cwd(), { key: buf }, function (err, dat) {
+  DWeb(process.cwd(), { key: buf }, function (err, dweb) {
     t.error(err, 'no callback error')
-    t.deepEqual(dat.archive.key, buf, 'keys match')
+    t.deepEqual(dweb.archive.key, buf, 'keys match')
 
-    dat.close(function (err) {
+    dweb.close(function (err) {
       t.error(err, 'no close error')
 
-      Dat(process.cwd(), { key: encoding.encode(buf) }, function (err, dat) {
+      DWeb(process.cwd(), { key: encoding.encode(buf) }, function (err, dweb) {
         t.error(err, 'no callback error')
-        t.deepEqual(dat.archive.key, buf, 'keys match still')
-        dat.close(function () {
-          rimraf.sync(path.join(process.cwd(), '.dat'))
+        t.deepEqual(dweb.archive.key, buf, 'keys match still')
+        dweb.close(function () {
+          rimraf.sync(path.join(process.cwd(), '.dweb'))
           t.end()
         })
       })
@@ -29,32 +29,32 @@ test('opts: string or buffer .key', function (t) {
 })
 
 test('opts: createIfMissing false', function (t) {
-  rimraf.sync(path.join(fixtures, '.dat'))
-  Dat(fixtures, { createIfMissing: false }, function (err, dat) {
+  rimraf.sync(path.join(fixtures, '.dweb'))
+  DWeb(fixtures, { createIfMissing: false }, function (err, dweb) {
     t.ok(err, 'throws error')
     t.end()
   })
 })
 
-test('opts: createIfMissing false with empty .dat', function (t) {
+test('opts: createIfMissing false with empty .dweb', function (t) {
   t.skip('TODO')
   t.end()
-  // rimraf.sync(path.join(fixtures, '.dat'))
-  // fs.mkdirSync(path.join(fixtures, '.dat'))
-  // Dat(fixtures, {createIfMissing: false}, function (err, dat) {
+  // rimraf.sync(path.join(fixtures, '.dweb'))
+  // fs.mkdirSync(path.join(fixtures, '.dweb'))
+  // DWeb(fixtures, {createIfMissing: false}, function (err, dweb) {
   //   t.ok(err, 'errors')
-  //   rimraf.sync(path.join(fixtures, '.dat'))
+  //   rimraf.sync(path.join(fixtures, '.dweb'))
   //   t.end()
   // })
 })
 
 test('opts: errorIfExists true', function (t) {
-  rimraf.sync(path.join(fixtures, '.dat'))
-  // create dat to resume from
-  Dat(fixtures, function (err, dat) {
+  rimraf.sync(path.join(fixtures, '.dweb'))
+  // create dweb to resume from
+  DWeb(fixtures, function (err, dweb) {
     t.ifErr(err)
-    dat.close(function () {
-      Dat(fixtures, { errorIfExists: true }, function (err, dat) {
+    dweb.close(function () {
+      DWeb(fixtures, { errorIfExists: true }, function (err, dweb) {
         t.ok(err, 'throws error')
         t.end()
       })
@@ -62,10 +62,10 @@ test('opts: errorIfExists true', function (t) {
   })
 })
 
-test('opts: errorIfExists true without existing dat', function (t) {
-  rimraf.sync(path.join(fixtures, '.dat'))
-  // create dat to resume from
-  Dat(fixtures, { errorIfExists: true }, function (err, dat) {
+test('opts: errorIfExists true without existing dweb', function (t) {
+  rimraf.sync(path.join(fixtures, '.dweb'))
+  // create dweb to resume from
+  DWeb(fixtures, { errorIfExists: true }, function (err, dweb) {
     t.ifErr(err)
     t.end()
   })

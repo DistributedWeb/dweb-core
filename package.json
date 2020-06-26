@@ -1,6 +1,6 @@
 {
-  "name": "dweb-core",
-  "version": "1.0.0",
+  "name": "dwebs-core",
+  "version": "1.0.1",
   "description": "Core JavaScript library for dWebJS implementation",
   "main": "index.js",
   "scripts": {
@@ -10,12 +10,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/datproject/dat-node.git"
+    "url": "git://github.com/datproject/dweb-node.git"
   },
   "bugs": {
-    "url": "https://github.com/datproject/dat-node/issues"
+    "url": "https://github.com/datproject/dweb-node/issues"
   },
-  "homepage": "http://datproject.org",
+  "homepage": "http://dwebx.org",
   "author": "Joe Hand <joe@hand.email>",
   "license": "MIT",
   "dependencies": {
@@ -49,8 +49,8 @@
   },
   "keywords": [
     "data",
-    "dat",
-    "hyperdrive",
+    "dweb",
+    "dwebfs",
     "p2p"
   ]
 }

@@ -6,11 +6,11 @@ const importFiles = require('./lib/import-files')
 const createNetwork = require('./lib/network')
 const stats = require('./lib/stats')
 const serveHttp = require('./lib/serve')
-const debug = require('debug')('dat-node')
+const debug = require('debug')('dweb-node')
 
-module.exports = (...args) => new Dat(...args)
+module.exports = (...args) => new DWeb(...args)
 
-class Dat {
+class DWeb {
   constructor (archive, opts) {
     assert.ok(archive, 'archive required')
 
@@ -129,7 +129,7 @@ class Dat {
 
   close (cb) {
     cb = cb || noop
-    if (this._closed) return cb(new Error('Dat is already closed'))
+    if (this._closed) return cb(new Error('DWeb is already closed'))
 
     var self = this
     self._closed = true
@@ -161,7 +161,7 @@ class Dat {
     }
   }
 }
-Dat.prototype.joinNetwork = Dat.prototype.join
-Dat.prototype.leaveNetwork = Dat.prototype.leave
+DWeb.prototype.joinNetwork = DWeb.prototype.join
+DWeb.prototype.leaveNetwork = DWeb.prototype.leave
 
 function noop () { }
